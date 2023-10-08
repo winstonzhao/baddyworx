@@ -126,7 +126,7 @@ function App() {
               }),
               headers: { "content-type": "application/json" },
             }).then((res) => res.json().then(setAvailabilitiesState));
-            setCheckedState(moment().utc().format("hh:mm:ss"));
+            setCheckedState(moment().format("hh:mm:ss"));
 
             if (intervalState) {
               clearInterval(intervalState);
@@ -145,7 +145,7 @@ function App() {
                   headers: { "content-type": "application/json" },
                 }).then((res) =>
                   res.json().then((d) => {
-                    setCheckedState(moment().utc().format("hh:mm:ss"));
+                    setCheckedState(moment().format("hh:mm:ss"));
                     setAvailabilitiesState(d);
                   })
                 );
@@ -285,6 +285,7 @@ function App() {
               const startTime = moment(avail.slot.startDate).format("hA");
               const endTime = moment(avail.slot.endDate).format("hA");
               const msg = `${startTime} - ${endTime} ${date
+                .utc()
                 .format(
                   "dddd Mo MMMM"
                 )} - ${daysFromNow} days from now - Court ${avail.court}`;
