@@ -280,7 +280,7 @@ function App() {
           {availabilitiesState &&
             availabilitiesState.map((avail, i) => {
               const date = moment(avail.slot.startDate).startOf("day");
-              const now = moment().utc().add(11, "h").startOf("day");
+              const now = moment().startOf("day");
               const daysFromNow = (date - now) / (172800000 / 2);
               const startTime = moment(avail.slot.startDate).format("hA");
               const endTime = moment(avail.slot.endDate).format("hA");
