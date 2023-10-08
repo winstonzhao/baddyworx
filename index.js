@@ -132,8 +132,8 @@ const getAvailabilityWithFilter = async (filter) => {
     if (!filter.days.includes(weekDay)) continue;
     for (const court of Object.keys(availability[key])) {
       for (const slot of availability[key][court]) {
-        const start = moment(slot.startDate).add(-11, "h").hour();
-        const end = moment(slot.endDate).add(-11, "h").hour();
+        const start = moment(slot.startDate).hour();
+        const end = moment(slot.endDate).hour();
         if (
           start >= filter.hourStart &&
           end <= filter.hourEnd &&
