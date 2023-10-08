@@ -126,7 +126,7 @@ function App() {
               }),
               headers: { "content-type": "application/json" },
             }).then((res) => res.json().then(setAvailabilitiesState));
-            setCheckedState(moment().format("hh:mm:ss"));
+            setCheckedState(moment().utc().format("hh:mm:ss"));
 
             if (intervalState) {
               clearInterval(intervalState);
@@ -145,7 +145,7 @@ function App() {
                   headers: { "content-type": "application/json" },
                 }).then((res) =>
                   res.json().then((d) => {
-                    setCheckedState(moment().format("hh:mm:ss"));
+                    setCheckedState(moment().utc().format("hh:mm:ss"));
                     setAvailabilitiesState(d);
                   })
                 );
@@ -279,13 +279,12 @@ function App() {
           )}
           {availabilitiesState &&
             availabilitiesState.map((avail, i) => {
-              const date = moment(avail.slot.startDate).utc().startOf("day");
+              const date = moment(avail.slot.startDate).startOf("day");
               const now = moment().utc().add(11, "h").startOf("day");
               const daysFromNow = (date - now) / (172800000 / 2);
-              const startTime = moment(avail.slot.startDate).utc().format("hA");
-              const endTime = moment(avail.slot.endDate).utc().format("hA");
+              const startTime = moment(avail.slot.startDate).format("hA");
+              const endTime = moment(avail.slot.endDate).format("hA");
               const msg = `${startTime} - ${endTime} ${date
-                .utc()
                 .format(
                   "dddd Mo MMMM"
                 )} - ${daysFromNow} days from now - Court ${avail.court}`;
