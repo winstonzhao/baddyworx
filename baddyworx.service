@@ -1,0 +1,12 @@
+[Unit]
+Description=BaddyWorx Service
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/baddyworx
+ExecStart=/home/ubuntu/.nvm/versions/node/v20.5.0/bin/node /home/ubuntu/baddyworx/index.js
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
