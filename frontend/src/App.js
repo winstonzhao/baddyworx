@@ -284,6 +284,11 @@ function App() {
               const daysFromNow = (date - now) / (172800000 / 2);
               const startTime = moment(avail.slot.startDate).format("hA");
               const endTime = moment(avail.slot.endDate).format("hA");
+              console.log(date
+                .utc()
+                .format(
+                  "dddd Mo MMMM"
+                ))
               const msg = `${startTime} - ${endTime} ${date
                 .utc()
                 .format(
