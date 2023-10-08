@@ -132,8 +132,8 @@ const getAvailabilityWithFilter = async (filter) => {
     if (!filter.days.includes(weekDay)) continue;
     for (const court of Object.keys(availability[key])) {
       for (const slot of availability[key][court]) {
-        const start = moment(slot.startDate).hour();
-        const end = moment(slot.endDate).hour();
+        const start = moment(slot.startDate).add(-11, "h").hour();
+        const end = moment(slot.endDate).add(-11, "h").hour();
         if (
           start >= filter.hourStart &&
           end <= filter.hourEnd &&
@@ -172,4 +172,5 @@ const path = require('path');
 app.get('*', (req, res) => {
 res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
 });
-app.listen(8001);
+// if not in production use the port 5000
+app.listen(3001);
