@@ -45,7 +45,7 @@ function App() {
       }, {})
     );
 
-  if (previousAvailabilitiesState !== null && availabilitiyAlerts.length > previousAvailabilitiesState.length) {
+  if (previousAvailabilitiesState !== null && availabilitiyAlerts && availabilitiyAlerts.length > previousAvailabilitiesState.length) {
     for (const [start, _] of availabilitiyAlerts) {
       const idx = previousAvailabilitiesState.findIndex(([s, _]) => s === start);
       if (idx !== -1) {
