@@ -279,7 +279,7 @@ function App() {
           )}
           {availabilitiesState &&
             Object.entries(
-              availabilitiesState.temp3.reduce((a, c) => {
+              availabilitiesState.reduce((a, c) => {
                 if (a[c.slot.startDate]) a[c.slot.startDate].push(c.court);
                 else a[c.slot.startDate] = [c.court];
                 return a;
