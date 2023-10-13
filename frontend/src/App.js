@@ -141,6 +141,8 @@ function App() {
                   return a;
                 }, {});
 
+                console.log(currentAlerts)
+
                 if (
                   currentAlerts !== null &&
                   Object.keys(newAlerts).length >
