@@ -17,6 +17,10 @@ function App() {
     errorMessage: null,
   });
 
+  Notification.requestPermission().then((permission) => {
+    console.log(permission)
+  });
+
   const [availabilitiesState, setAvailabilitiesState] = useState(null);
   const [intervalState, setIntervalState] = useState(null);
   const [checkedState, setCheckedState] = useState(null);
