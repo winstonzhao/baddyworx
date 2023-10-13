@@ -45,11 +45,11 @@ const getStatusForDate = async (d) => {
           minute: parseInt(minute),
         };
       });
-      startDate.setHours(start.hour - 1 + 12);
+      startDate.setHours(start.hour);
       startDate.setMinutes(start.minute);
       startDate.setSeconds(0);
       startDate.setMilliseconds(0);
-      endDate.setHours(end.hour - 1 + 12);
+      endDate.setHours(end.hour);
       endDate.setMinutes(end.minute);
       endDate.setSeconds(0);
       endDate.setMilliseconds(0);
@@ -129,6 +129,7 @@ const getAvailabilityWithFilter = async (filter) => {
   for (const key of Object.keys(availability)) {
     const time = moment(key);
     const weekDay = time.format("dddd");
+	 
     if (!filter.days.includes(weekDay)) continue;
     for (const court of Object.keys(availability[key])) {
       for (const slot of availability[key][court]) {

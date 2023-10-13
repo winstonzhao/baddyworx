@@ -32,7 +32,6 @@ function App() {
       currentDays.splice(idx, 1);
     }
     setFormState({ ...formState, days: [...currentDays] });
-    console.log(formState);
   };
 
   return (
@@ -294,7 +293,7 @@ function App() {
               const msg = `${startTime} - ${endTime} ${date
                 .utc()
                 .format(
-                  "dddd Mo MMMM"
+                  "dddd Do MMMM"
                 )} - ${daysFromNow} days from now - Court ${courts.join(", ")}`;
               return (
                 <Alert key={i} variant="success">
