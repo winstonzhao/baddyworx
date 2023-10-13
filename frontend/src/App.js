@@ -66,7 +66,7 @@ function App() {
 
     alert(msg);
   }
-  setNumberOfFreeSlots(availabilitiyAlerts.length);
+  setPreviousAvailabilitiesState(availabilitiyAlerts);
 
   return (
     <div className="App">
