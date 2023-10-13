@@ -7,7 +7,7 @@ const cors = require('cors')
 app.use(cors())
 
 const getStatusForDate = async (d) => {
-  const date = d.utc().startOf("day").toDate();
+  const date = d.startOf("day").toDate();
   const day = date.getDate();
   const month = date.getMonth() + 1;
   const year = date.getYear() + 1900;

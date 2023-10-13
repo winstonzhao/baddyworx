@@ -271,24 +271,31 @@ function App() {
         <div className="availabilities">
           {intervalState && (
             <div style={{ marginBottom: "20px" }}>
-              Will continue polling for availabilities. Last checked {checkedState}.
+              Will continue polling for availabilities. Last checked{" "}
+              {checkedState}.
             </div>
           )}
           {JSON.stringify(availabilitiesState) === "[]" && (
             <Alert variant="danger">No availabilities found.</Alert>
           )}
           {availabilitiesState &&
-            availabilitiesState.map((avail, i) => {
-              const date = moment(avail.slot.startDate).utc().startOf("day");
+            Object.entries(
+              availabilitiesState.temp3.reduce((a, c) => {
+                if (a[c.slot.startDate]) a[c.slot.startDate].push(c.court);
+                else a[c.slot.startDate] = [c.court];
+                return a;
+              }, {})
+            ).map(([start, courts], i) => {
+              const date = moment(start).utc().startOf("day");
               const now = moment().utc().add(11, "h").startOf("day");
               const daysFromNow = (date - now) / (172800000 / 2);
-              const startTime = moment(avail.slot.startDate).utc().format("hA");
-              const endTime = moment(avail.slot.endDate).utc().format("hA");
+              const startTime = moment(start).utc().format("hA");
+              const endTime = startTime.add(1, "hour").utc().format("hA");
               const msg = `${startTime} - ${endTime} ${date
                 .utc()
                 .format(
                   "dddd Mo MMMM"
-                )} - ${daysFromNow} days from now - Court ${avail.court}`;
+                )} - ${daysFromNow} days from now - Court ${courts.join(", ")}`;
               return (
                 <Alert key={i} variant="success">
                   {msg}
