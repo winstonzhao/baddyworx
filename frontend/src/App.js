@@ -195,7 +195,7 @@ function App() {
                     setAvailabilitiesState(d);
                   })
                 );
-              }, 1000)
+              }, 10000)
             );
           }}
         >
