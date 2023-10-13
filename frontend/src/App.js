@@ -289,7 +289,7 @@ function App() {
               const now = moment().utc().add(11, "h").startOf("day");
               const daysFromNow = (date - now) / (172800000 / 2);
               const startTime = moment(start).utc().format("hA");
-              const endTime = startTime.add(1, "hour").utc().format("hA");
+              const endTime = moment(startTime).add(1, "hour").utc().format("hA");
               const msg = `${startTime} - ${endTime} ${date
                 .utc()
                 .format(
