@@ -45,29 +45,6 @@ function App() {
       }, {})
     );
 
-  if (previousAvailabilitiesState !== null && availabilitiyAlerts && availabilitiyAlerts.length > previousAvailabilitiesState.length) {
-    for (const [start, _] of availabilitiyAlerts) {
-      const idx = previousAvailabilitiesState.findIndex(([s, _]) => s === start);
-      if (idx !== -1) {
-        previousAvailabilitiesState.splice(idx, 1);
-      }
-    }
-    const [start, courts] = availabilitiyAlerts;
-    const date = moment(start).utc().startOf("day");
-    const now = moment().utc().add(11, "h").startOf("day");
-    const daysFromNow = (date - now) / (172800000 / 2);
-    const startTime = moment(start).utc().format("hA");
-    const endTime = moment(start).add(1, "h").utc().format("hA");
-    const msg = `New slot! ${startTime} - ${endTime} ${date
-      .utc()
-      .format(
-        "dddd Do MMMM"
-      )} - ${daysFromNow} days from now - Court ${courts.join(", ")}`;
-
-    alert(msg);
-  }
-  setPreviousAvailabilitiesState(availabilitiyAlerts);
-
   return (
     <div className="App">
       <header className="App-header">
@@ -311,7 +288,7 @@ function App() {
           {availabilitiesState !== null && availabilitiesState.length === 0 && (
             <Alert variant="danger">No availabilities found.</Alert>
           )}
-          {availabilitiyAlerts && availabilitiyAlerts.map(([start, courts], i) => {
+          {availabilitiyAlerts.map(([start, courts], i) => {
             const date = moment(start).utc().startOf("day");
             const now = moment().utc().add(11, "h").startOf("day");
             const daysFromNow = (date - now) / (172800000 / 2);
@@ -321,7 +298,7 @@ function App() {
               .utc()
               .format(
                 "dddd Do MMMM"
-              )} - ${daysFromNow} days from now - Court(s) ${courts.join(", ")}`;
+              )} - ${daysFromNow} days from now - Court ${courts.join(", ")}`;
             return (
               <Alert key={i} variant="success">
                 {msg}
