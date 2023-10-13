@@ -34,16 +34,6 @@ function App() {
     setFormState({ ...formState, days: [...currentDays] });
   };
 
-  const availabilitiyAlerts =
-    availabilitiesState &&
-    Object.entries(
-      availabilitiesState.reduce((a, c) => {
-        if (a[c.slot.startDate]) a[c.slot.startDate].push(c.court);
-        else a[c.slot.startDate] = [c.court];
-        return a;
-      }, {})
-    );
-
   return (
     <div className="App">
       <header className="App-header">
@@ -159,8 +149,7 @@ function App() {
                   for (const start of Object.keys(currentAlerts))
                     delete newAlerts[start];
 
-                  const [start, courts] =
-                    Object.entries(newAlerts)[0];
+                  const [start, courts] = Object.entries(newAlerts)[0];
                   const date = moment(start).utc().startOf("day");
                   const now = moment().utc().add(11, "h").startOf("day");
                   const daysFromNow = (date - now) / (172800000 / 2);
@@ -330,23 +319,30 @@ function App() {
           {availabilitiesState !== null && availabilitiesState.length === 0 && (
             <Alert variant="danger">No availabilities found.</Alert>
           )}
-          {availabilitiyAlerts.map(([start, courts], i) => {
-            const date = moment(start).utc().startOf("day");
-            const now = moment().utc().add(11, "h").startOf("day");
-            const daysFromNow = (date - now) / (172800000 / 2);
-            const startTime = moment(start).utc().format("hA");
-            const endTime = moment(start).add(1, "h").utc().format("hA");
-            const msg = `${startTime} - ${endTime} ${date
-              .utc()
-              .format(
-                "dddd Do MMMM"
-              )} - ${daysFromNow} days from now - Court ${courts.join(", ")}`;
-            return (
-              <Alert key={i} variant="success">
-                {msg}
-              </Alert>
-            );
-          })}
+          {availabilitiesState &&
+            Object.entries(
+              availabilitiesState.reduce((a, c) => {
+                if (a[c.slot.startDate]) a[c.slot.startDate].push(c.court);
+                else a[c.slot.startDate] = [c.court];
+                return a;
+              }, {})
+            ).availabilitiyAlerts.map(([start, courts], i) => {
+              const date = moment(start).utc().startOf("day");
+              const now = moment().utc().add(11, "h").startOf("day");
+              const daysFromNow = (date - now) / (172800000 / 2);
+              const startTime = moment(start).utc().format("hA");
+              const endTime = moment(start).add(1, "h").utc().format("hA");
+              const msg = `${startTime} - ${endTime} ${date
+                .utc()
+                .format(
+                  "dddd Do MMMM"
+                )} - ${daysFromNow} days from now - Court ${courts.join(", ")}`;
+              return (
+                <Alert key={i} variant="success">
+                  {msg}
+                </Alert>
+              );
+            })}
         </div>
       </header>
     </div>
