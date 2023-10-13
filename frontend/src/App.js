@@ -326,7 +326,7 @@ function App() {
                 else a[c.slot.startDate] = [c.court];
                 return a;
               }, {})
-            ).availabilitiyAlerts.map(([start, courts], i) => {
+            ).map(([start, courts], i) => {
               const date = moment(start).utc().startOf("day");
               const now = moment().utc().add(11, "h").startOf("day");
               const daysFromNow = (date - now) / (172800000 / 2);
