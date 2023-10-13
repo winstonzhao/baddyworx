@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import InputGroup from "react-bootstrap/InputGroup";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Alert from "react-bootstrap/Alert";
 import moment from "moment";
 
@@ -20,6 +20,9 @@ function App() {
   const [availabilitiesState, setAvailabilitiesState] = useState(null);
   const [intervalState, setIntervalState] = useState(null);
   const [checkedState, setCheckedState] = useState(null);
+  const stateRef = useRef();
+
+  stateRef.current = availabilitiesState;
 
   const onCheckBoxChange = (e) => {
     const currentDays = formState.days;
@@ -126,49 +129,7 @@ function App() {
               headers: { "content-type": "application/json" },
             })
               .then((res) => res.json())
-              .then((res) => {
-                const currentAlerts = availabilitiesState
-                  ? availabilitiesState.reduce((a, c) => {
-                      if (a[c.slot.startDate])
-                        a[c.slot.startDate].push(c.court);
-                      else a[c.slot.startDate] = [c.court];
-                      return a;
-                    }, {})
-                  : null;
-                const newAlerts = res.reduce((a, c) => {
-                  if (a[c.slot.startDate]) a[c.slot.startDate].push(c.court);
-                  else a[c.slot.startDate] = [c.court];
-                  return a;
-                }, {});
-
-                console.log(currentAlerts)
-
-                if (
-                  currentAlerts !== null &&
-                  Object.keys(newAlerts).length >
-                    Object.keys(currentAlerts).length
-                ) {
-                  for (const start of Object.keys(currentAlerts))
-                    delete newAlerts[start];
-
-                  const [start, courts] = Object.entries(newAlerts)[0];
-                  const date = moment(start).utc().startOf("day");
-                  const now = moment().utc().add(11, "h").startOf("day");
-                  const daysFromNow = (date - now) / (172800000 / 2);
-                  const startTime = moment(start).utc().format("hA");
-                  const endTime = moment(start).add(1, "h").utc().format("hA");
-                  const msg = `New slot! ${startTime} - ${endTime} ${date
-                    .utc()
-                    .format(
-                      "dddd Do MMMM"
-                    )} - ${daysFromNow} days from now - Court ${courts.join(
-                    ", "
-                  )}`;
-
-                  alert(msg);
-                }
-                setAvailabilitiesState(res);
-              });
+              .then(setAvailabilitiesState);
             setCheckedState(moment().format("hh:mm:ss"));
 
             if (intervalState) {
@@ -189,10 +150,52 @@ function App() {
                 }).then((res) =>
                   res.json().then((d) => {
                     setCheckedState(moment().format("hh:mm:ss"));
+                    const currentAlerts = stateRef.current
+                      ? stateRef.current.reduce((a, c) => {
+                          if (a[c.slot.startDate])
+                            a[c.slot.startDate].push(c.court);
+                          else a[c.slot.startDate] = [c.court];
+                          return a;
+                        }, {})
+                      : null;
+                    const newAlerts = d.reduce((a, c) => {
+                      if (a[c.slot.startDate])
+                        a[c.slot.startDate].push(c.court);
+                      else a[c.slot.startDate] = [c.court];
+                      return a;
+                    }, {});
+
+                    if (
+                      currentAlerts !== null &&
+                      Object.keys(newAlerts).length >
+                        Object.keys(currentAlerts).length
+                    ) {
+                      for (const start of Object.keys(currentAlerts))
+                        delete newAlerts[start];
+
+                      const [start, courts] = Object.entries(newAlerts)[0];
+                      const date = moment(start).utc().startOf("day");
+                      const now = moment().utc().add(11, "h").startOf("day");
+                      const daysFromNow = (date - now) / (172800000 / 2);
+                      const startTime = moment(start).utc().format("hA");
+                      const endTime = moment(start)
+                        .add(1, "h")
+                        .utc()
+                        .format("hA");
+                      const msg = `New slot! ${startTime} - ${endTime} ${date
+                        .utc()
+                        .format(
+                          "dddd Do MMMM"
+                        )} - ${daysFromNow} days from now - Court ${courts.join(
+                        ", "
+                      )}`;
+
+                      alert(msg);
+                    }
                     setAvailabilitiesState(d);
                   })
                 );
-              }, 10000)
+              }, 1000)
             );
           }}
         >
