@@ -311,7 +311,7 @@ function App() {
           {availabilitiesState !== null && availabilitiesState.length === 0 && (
             <Alert variant="danger">No availabilities found.</Alert>
           )}
-          {availabilitiyAlerts.map(([start, courts], i) => {
+          {availabilitiyAlerts && availabilitiyAlerts.map(([start, courts], i) => {
             const date = moment(start).utc().startOf("day");
             const now = moment().utc().add(11, "h").startOf("day");
             const daysFromNow = (date - now) / (172800000 / 2);
