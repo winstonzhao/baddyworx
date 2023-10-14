@@ -23,6 +23,7 @@ function App() {
   const stateRef = useRef();
 
   stateRef.current = availabilitiesState;
+  Notification.requestPermission(() => {})
 
   const onCheckBoxChange = (e) => {
     const currentDays = formState.days;
@@ -190,7 +191,10 @@ function App() {
                         ", "
                       )}`;
 
-                      alert(msg);
+                      new Notification("New Court Available", {
+                        body: msg,
+                        icon: badminton,
+                      });
                     }
                     setAvailabilitiesState(d);
                   })
